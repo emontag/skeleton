@@ -1,11 +1,10 @@
 package controllers;
-
-import api.CreateReceiptRequest;
 import api.ReceiptResponse;
 import dao.ReceiptDao;
+import dao.TagDAO;
+import generated.tables.Receipttag;
 import generated.tables.records.ReceiptsRecord;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.jooq.DSLContext;
+import generated.tables.records.ReceipttagRecord;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -16,24 +15,31 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@Path("/receipts")
+@Path("/tags")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ReceiptController {
-    final ReceiptDao receipts;
+public class TagController {
+    final TagDAO receipts;
 
-    public ReceiptController(ReceiptDao receipts) {
+    public TagController(TagDAO receipts) {
         this.receipts = receipts;
     }
 
-    @POST
-    public int createReceipt(@Valid @NotNull CreateReceiptRequest receipt) {
-        return receipts.insert(receipt.merchant, receipt.amount);
-    }
 
+
+    @PUT
+    @Path("/{tag}")
+    public void toggleTag(@PathParam("tag") String tagName, @Valid @NotNull Integer ID){
+        receipts.insertTag(tagName, ID);
+
+
+
+    }
     @GET
-    public List<ReceiptResponse> getReceipts() {
-        List<ReceiptsRecord> receiptRecords = receipts.getAllReceipts();
+    @Path("/{tag}")
+    public List<ReceiptResponse> getTaggedReceipts(){
+
+        List<ReceiptsRecord> receiptRecords = receipts.getTag();
         return receiptRecords.stream().map(ReceiptResponse::new).collect(toList());
     }
 
