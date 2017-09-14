@@ -21,11 +21,7 @@ public class HelloWorldController {
         return "Hello World " + session.toString();
     }
 
-    @GET
-    @Path("/")
-    public String getNetID(){
-        return "em789";
-    }
+
     @GET
     @Path("/netid")
     public String netID(){
