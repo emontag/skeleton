@@ -34,10 +34,10 @@ public class TagDAO {
         //checkState(receiptsRecord != null && receiptsRecord.getId() != null, "Insert failed");
     }
 
-    public List<ReceiptsRecord> getTag() {
+    public List<ReceiptsRecord> getTag(String tag) {
 
 
-        return dsl.select().from(RECEIPTS).join(RECEIPTTAG).on(RECEIPTS.ID.eq(RECEIPTTAG.ID)).fetchInto(RECEIPTS);
+        return dsl.select().from(RECEIPTS).join(RECEIPTTAG).on(RECEIPTS.ID.eq(RECEIPTTAG.ID)).where(RECEIPTTAG.RECEIPT_TAG.eq(tag)).fetchInto(RECEIPTS);
 
 
     }
