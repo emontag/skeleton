@@ -267,24 +267,25 @@
                         contentType: "text/plain",
                         success: function(result) {
                             $('#vid-form').hide();
-                            track.stop();
                             $('#form').show();
-                            $('#merchant').val(receipt.merchantName);
-                            $('#amount').val(receipt.amount);
+                            $('#merchant').val(result.merchantName);
+                            $('#amount').val(result.amount);
+                            track.stop();
+
                         },
                     })
-                        /*.then(response => {
+                       /* .then(response => {
                             $('video').after(`<div>got response: <pre>${JSON.stringify(response)}</pre></div>`);
                             //show form use merchant and amount id's to place values nnside
-                            $('#vid-form').hide();
-                            track.stop();
-                            $('#form').show();
+                           // $('#vid-form').hide();
+                            //track.stop();
+                            //$('#form').show();
                             //$('#merchant').val="Test";
                             //$('#amount').val=0;
-                            document.getElementById("merchant").value("Test");
+                            //document.getElementById("merchant").value("Test");
 
                         })*/
-                        //.always(() => console.log('request complete'));
+                        .always(() => console.log('request complete'));
                     // For debugging, you can uncomment this to see the frame that was captured
                     // $('BODY').append(canvas);
 

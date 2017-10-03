@@ -37,6 +37,7 @@ public class ReceiptImageController {
      */
     @POST
     public ReceiptSuggestionResponse parseReceipt(@NotEmpty String base64EncodedImage) throws Exception {
+
         Image img = Image.newBuilder().setContent(ByteString.copyFrom(Base64.getDecoder().decode(base64EncodedImage))).build();
         AnnotateImageRequest request = this.requestBuilder.setImage(img).build();
 
@@ -46,7 +47,6 @@ public class ReceiptImageController {
 
             String merchantName = "";
             BigDecimal amount = new BigDecimal(0);
-
             // Your Algo Here!!
             // Sort text annotations by bounding polygon.  Top-most non-decimal text is the merchant
             // bottom-most decimal text is the total amount
@@ -58,10 +58,11 @@ public class ReceiptImageController {
             }*/
             //TextAnnotation fullTextAnnotation = res.getFullTextAnnotation();
             List<EntityAnnotation> annotationList=res.getTextAnnotationsList();
-            merchantName=annotationList.get(0).getDescription();
-            for(int i=0; i< annotationList.size(); i++){
+            merchantName=annotationList.get(0).getDescription().split("\n")[0];
+            for(int i=annotationList.size()-1; i> 0; i--){
                 if(annotationList.get(i).getDescription().matches("[0-9]+\\.[0-9]{2}")){
                  amount=new BigDecimal(annotationList.get(i).getDescription());
+                 break;
                 }
             }
 
